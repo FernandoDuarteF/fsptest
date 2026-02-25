@@ -7,6 +7,7 @@
 include { FALCO      } from '../../../modules/nf-core/falco/main'
 include { FASTQC     } from '../../../modules/nf-core/fastqc/main'
 include { FASTP      } from '../../../modules/nf-core/fastp/main'
+include { ABYSS      } from '../../../modules/local/abyss/main'
 
 workflow PREPROCESSING {
 
@@ -38,6 +39,11 @@ workflow PREPROCESSING {
         FASTP.out.reads
     )
     ch_versions = ch_versions.mix( FALCO.out.versions )
+
+    ABYSS (
+        FASTP.out.reads,
+        50
+    )
 
     emit:
     // Emit module versions
